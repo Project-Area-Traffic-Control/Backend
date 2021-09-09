@@ -1,0 +1,19 @@
+{
+  "dbUrl": "mongodb://localhost:27017/undercover-api",
+  "buildPaths": {
+    "client": "public",
+    "server": "build"
+  },
+  "publicPath": "/assets/",
+  "crypto": {
+    "algorithm": "sha512",
+    "iterations": 100000,
+    "length": 36
+  },
+  "jwt": {
+    "expiresIn": "86400000"
+  },
+  "cookies": {
+    "expires": "86400000"
+  }
+}

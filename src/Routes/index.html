@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        .column {
+            float: left;
+            width: 33.3%;
+            margin-bottom: 16px;
+            padding: 0 8px;
+        }
+
+        @media screen and (max-width: 650px) {
+            .column {
+                width: 100%;
+                display: block;
+            }
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        .container::after,
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .title {
+            color: grey;
+        }
+
+        .button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .head {
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <br>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <h1 class="head">Camara 1</h1>
+                <img id="img1" style="width:100%">
+                <div class="container">
+                    <h2 id="license1">License</h2>
+                    <p id="province1">Province</p>
+                    <p id="ip1">IP</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <h1 class="head">Camara 2</h1>
+                <img id="img2" style="width:100%">
+                <div class="container">
+                    <h2 id="license2">License</h2>
+                    <p id="province2">Province</p>
+                    <p id="ip2">IP</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <h1 class="head">Camara 3</h1>
+                <img id="img3" style="width:100%">
+                <div class="container">
+                    <h2 id="license3">License</h2>
+                    <p id="province3">Province</p>
+                    <p id="ip3">IP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            socket.on('Device11', function (msg) {
+                console.log("data : ",msg)
+                document.getElementById('img1').src = 'data:image/png;base64,' + msg.IMAGE;
+                $('#license1').text(msg.LICENSEPLATE);
+                $('#province1').text(msg.PROVINCE);
+                $('#ip1').text(msg.IP);
+            });
+            socket.on('Device13', function (msg) {
+                console.log("data : ",msg)
+                document.getElementById('img2').src = 'data:image/png;base64,' + msg.IMAGE;
+                $('#license2').text(msg.LICENSEPLATE);
+                $('#province2').text(msg.PROVINCE);
+                $('#ip2').text(msg.IP);
+            });
+            socket.on('Device15', function (msg) {
+                console.log("data : ",msg)
+                document.getElementById('img3').src = 'data:image/png;base64,' + msg.IMAGE;
+                $('#license3').text(msg.LICENSEPLATE);
+                $('#province3').text(msg.PROVINCE);
+                $('#ip3').text(msg.IP);
+            });
+            socket.on('licenseAlert', (msg) => {
+                let type = msg.isBlacklist ? 'blacklist' : 'whitelist';
+                alert(msg.license + ' : ' + type)
+            })
+        });
+    </script>
+
+</body>
+
+</html>
