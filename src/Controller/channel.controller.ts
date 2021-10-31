@@ -70,6 +70,7 @@ const deleteChannel = async (uid: number) => {
         let channelRemove = await channelRepository.findOne({ id: uid });
         channelRemove.junction = null
         channelRemove.phase = null
+        channelRemove.flashing_plan = null
         let nullJunction = await channelRepository.save(channelRemove)
         let resChannel = await channelRepository.remove(channelRemove);
         return { ...resChannel };

@@ -83,6 +83,9 @@ const deleteJunction = async (uid: number) => {
         let junctionRemove = await junctionRepository.findOne({ id: uid });
         junctionRemove.area = null
         junctionRemove.channel = null
+        junctionRemove.flashing_plan = null
+        junctionRemove.fixtime_plan = null
+        junctionRemove.plan = null
         let nullArea = await junctionRepository.save(junctionRemove)
         let resJunction = await junctionRepository.remove(junctionRemove);
         return { ...resJunction };

@@ -7,6 +7,9 @@ import JunctionRoute from './junction.route';
 import ChannelRoute from './channel.route';
 import PhaseRoute from './phase.route';
 import FlashingRoute from './flashing.route';
+import FixtimeRoute from './fixtime.route';
+import PlanRoute from './plan.route';
+import PatternRoute from './pattern.route';
 // import AuthRoute from './auth.route';
 // import RoleRoute from './role.route'
 // import LicenseRoute from './license.route'
@@ -30,6 +33,9 @@ router.use('/junctions', JunctionRoute);
 router.use('/channels', ChannelRoute);
 router.use('/phases', PhaseRoute);
 router.use('/flash_mode', FlashingRoute);
+router.use('/fixtime_mode', FixtimeRoute);
+router.use('/plans', PlanRoute);
+router.use('/patterns', PatternRoute);
 // router.use('/auth', AuthRoute);
 // router.use('/role', RoleRoute);
 // router.use('/license', LicenseRoute);

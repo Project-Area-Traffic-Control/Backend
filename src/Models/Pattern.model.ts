@@ -1,6 +1,7 @@
 import { Console } from "console";
 import { join } from "lodash";
 import { Entity, OneToMany, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Plan } from "./Plan.model";
 
 export enum PatternName {
     PATTERN_1_4_WAYS = "PATTERN_1_4_WAYS",
@@ -27,13 +28,13 @@ export class Pattern {
     @Column({ type: 'enum', enum: PatternName })
     pattern: PatternName;
 
-    @Column({ type: 'int'})
+    @Column({ type: 'int' })
     order: number;
 
-    @Column({ type: 'int'})
+    @Column({ type: 'int' })
     duration: number;
 
-    @Column({ type: 'int'})
-    plan_id: number;
-        
+    @ManyToOne(() => Plan, plan => plan.pattern)
+    plan: Plan
+
 }

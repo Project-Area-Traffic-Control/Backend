@@ -19,7 +19,7 @@ export class Fixtime {
     @ManyToOne(() => Junction, junction => junction.fixtime_plan)
     junction: Junction
 
-    @OneToOne(() => Plan, plan => plan.fixtime)
+    @OneToOne(() => Plan, plan => plan.fixtime_id)
     plan: Plan
 
 }

@@ -69,6 +69,7 @@ const deletePhase = async (uid: number) => {
         const phaseRepository = await getConnection().getRepository(Phase);
         let phaseRemove = await phaseRepository.findOne({ id: uid });
         phaseRemove.channel = null
+        phaseRemove.flashing_plan = null
         let nullChannel = await phaseRepository.save(phaseRemove)
         let resPhase = await phaseRepository.remove(phaseRemove);
         return { ...resPhase };

@@ -4,6 +4,7 @@ import { Area } from "./Area.model";
 import { Channel } from "./Channel.model";
 import { Fixtime } from "./Fixtime.model";
 import { Flashing } from "./Flashing.model";
+import { Plan } from "./Plan.model";
 
 @Entity()
 export class Junction {
@@ -32,8 +33,11 @@ export class Junction {
     @OneToMany(() => Flashing, flashing => flashing.junction)
     flashing_plan: Flashing[]
 
-    @OneToMany(()=> Fixtime,fixtime=>fixtime.junction)
+    @OneToMany(() => Fixtime, fixtime => fixtime.junction)
     fixtime_plan: Fixtime
+
+    @OneToMany(() => Plan, plan => plan.junction)
+    plan: Plan[]
     // @Column({ type: "float" })
     // area_id: number;
 }
