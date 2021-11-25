@@ -2,6 +2,7 @@ import { Entity, OneToMany, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGene
 import { Flashing } from "./Flashing.model";
 import { Junction } from "./Junction.model";
 import { Phase } from "./Phase.model";
+import { Vehicle } from "./Vehicle.model";
 
 @Entity()
 export class Channel {
@@ -9,7 +10,7 @@ export class Channel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 100, unique: true })
+    @Column({ length: 100 })
     name: string;
 
     @Column({ type: 'int' })
@@ -27,5 +28,6 @@ export class Channel {
     @OneToMany(() => Flashing, flashing => flashing.channel)
     flashing_plan: Flashing[]
 
-
+    @OneToMany(() => Vehicle, vehicle => vehicle.channel)
+    vehicle: Vehicle[]
 }

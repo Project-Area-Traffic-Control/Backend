@@ -5,6 +5,7 @@ import { Channel } from "./Channel.model";
 import { Fixtime } from "./Fixtime.model";
 import { Flashing } from "./Flashing.model";
 import { Plan } from "./Plan.model";
+import { Vehicle } from "./Vehicle.model";
 
 @Entity()
 export class Junction {
@@ -24,6 +25,9 @@ export class Junction {
     @Column({ type: "int" })
     number_channel: number;
 
+    @Column({ type: "int"})
+    retate: number;
+    
     @ManyToOne(() => Area, area => area.junction)
     area: Area
 
@@ -38,6 +42,9 @@ export class Junction {
 
     @OneToMany(() => Plan, plan => plan.junction)
     plan: Plan[]
+
+    @OneToMany(() => Vehicle, vehicle => vehicle.junction)
+    vehicle: Vehicle[]
     // @Column({ type: "float" })
     // area_id: number;
 }

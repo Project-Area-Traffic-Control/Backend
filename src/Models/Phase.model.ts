@@ -3,6 +3,7 @@ import { Entity, OneToMany, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGene
 import { EntitySchemaUniqueOptions } from "typeorm/entity-schema/EntitySchemaUniqueOptions";
 import { Channel } from "./Channel.model";
 import { Flashing } from "./Flashing.model";
+import { Vehicle } from "./Vehicle.model";
 
 export enum TypeName {
     FORWARD = "FORWARD",
@@ -27,6 +28,9 @@ export class Phase {
 
     @OneToMany(() => Flashing, flashing => flashing.phase)
     flashing_plan: Flashing[]
+
+    @OneToMany(() => Vehicle, vehicle => vehicle.phase)
+    vehicle: Vehicle[]
     // @Column({ type: 'int' })
     // channel_id: number;
 
