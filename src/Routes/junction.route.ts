@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
+import { print } from "util";
 import junctionController from "../Controller/junction.controller";
+import junctionControlController from "../Controller/junction.control.controller";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -68,6 +70,28 @@ router.delete('/:id', async (req: Request, res: Response) => {
         let uid = Number(req.params.id);
         let deleteJunction = await junctionController.deleteJunction(uid);
         return res.send(deleteJunction);
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+})
+router.put('/:id/setMode', async (req: Request, res: Response) => {
+    try {
+        let id = Number(req.params.id);
+        let mode = Number(req.body.mode);
+        console.log("Junction ",id," set mode : ",mode);
+        junctionControlController.setMode(id,mode);
+        return res.sendStatus(200);
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+})
+router.put('/:id/setPhase', async (req: Request, res: Response) => {
+    try {
+        let id = Number(req.params.id);
+        let phase = Number(req.body.phase);
+        console.log("Junction ",id," set phase : ",phase);
+        junctionControlController.setPhase(id,phase);
+        return res.sendStatus(200);
     } catch (e) {
         return res.status(400).send(e);
     }

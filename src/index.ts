@@ -16,6 +16,7 @@ import cookieParser from "cookie-parser";
 
 
 import Routes from './Routes/index.route'
+import junctionControlController from './Controller/junction.control.controller';
 // import LPR_DBController from './Controller/LPR_DB.controller';
 // import streamEvent from './streamEvent';
 // import alertHistoryController from './Controller/alertHistory.controller';
@@ -35,6 +36,11 @@ const io = new Server(httpServer, {
     }
 });
 
+// io.on("connect",(client) => {
+//     console.log("client connect : ",client.id)
+// })
+
+junctionControlController.setSocket(io);
 
 app.use(cors(
     {
