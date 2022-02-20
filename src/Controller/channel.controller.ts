@@ -84,7 +84,7 @@ const getAllChannel = async () => {
         const userRepository = await getConnection().getRepository(Channel);
         return await userRepository.find({
             select: ["id", "name", "nunmber_lane", "order"],
-            relations: ["junction"]
+            relations: ["junction", "phase"]
         })
     } catch (e) {
         throw e;

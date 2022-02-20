@@ -25,9 +25,9 @@ export class Junction {
     @Column({ type: "int" })
     number_channel: number;
 
-    @Column({ type: "int"})
-    retate: number;
-    
+    @Column({ type: "int", default: 0 })
+    rotate: number;
+
     @ManyToOne(() => Area, area => area.junction)
     area: Area
 

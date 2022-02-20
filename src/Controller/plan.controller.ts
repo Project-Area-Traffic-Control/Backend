@@ -74,6 +74,7 @@ const getPlanById = async (uid: number) => {
         const planRepository = await getConnection().getRepository(Plan);
         return await planRepository.createQueryBuilder("plan")
             .leftJoinAndSelect("plan.junction", "junction")
+            .leftJoinAndSelect("plan.pattern", "pattern")
             .where("plan.id = :id", { id: uid })
             .getOne();
     } catch (e) {
