@@ -21,6 +21,7 @@ const createPattern = async ({
     pattern.order = order
     pattern.duration = duration
     let plan = await getConnection().getRepository(Plan).findOne({ id: planID })
+    console.log(plan)
     pattern.plan = plan
     return await getConnection().getRepository(Pattern).save(pattern);
 }

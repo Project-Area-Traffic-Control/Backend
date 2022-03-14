@@ -29,6 +29,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.post("/", async (req: Request, res: Response) => {
     try {
         const juntion = await junctionController.createJunction({
+            id: null,
             name: req.body.name,
             latitude: req.body.latitude,
             longitude: req.body.longitude,
@@ -78,8 +79,8 @@ router.put('/:id/setMode', async (req: Request, res: Response) => {
     try {
         let id = Number(req.params.id);
         let mode = Number(req.body.mode);
-        console.log("Junction ",id," set mode : ",mode);
-        junctionControlController.setMode(id,mode);
+        console.log("Junction ", id, " set mode : ", mode);
+        junctionControlController.setMode(id, mode);
         return res.sendStatus(200);
     } catch (e) {
         return res.status(400).send(e);
@@ -89,8 +90,8 @@ router.put('/:id/setPhase', async (req: Request, res: Response) => {
     try {
         let id = Number(req.params.id);
         let phase = Number(req.body.phase);
-        console.log("Junction ",id," set phase : ",phase);
-        junctionControlController.setPhase(id,phase);
+        console.log("Junction ", id, " set phase : ", phase);
+        junctionControlController.setPhase(id, phase);
         return res.sendStatus(200);
     } catch (e) {
         return res.status(400).send(e);
