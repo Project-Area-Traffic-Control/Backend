@@ -17,13 +17,14 @@ const createVehicle = async ({
 }: vehicleInterface) => {
 
     const vehicle = new Vehicle();
-    let junction = await getConnection().getRepository(Junction).findOne({ id: junctionID})
+    // vehicle.create_time = create_time
+    let junction = await getConnection().getRepository(Junction).findOne({ id: junctionID })
     let channel = await getConnection().getRepository(Channel).findOne({ id: channelID })
-    let phase = await getConnection().getRepository(Phase).findOne({ id: phaseID})
+    let phase = await getConnection().getRepository(Phase).findOne({ id: phaseID })
     vehicle.channel = channel
     vehicle.phase = phase
     vehicle.junction = junction
-    return await getConnection().getRepository(Phase).save(phase);
+    return await getConnection().getRepository(Vehicle).save(vehicle);
 }
 
 export default {

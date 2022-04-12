@@ -34,7 +34,8 @@ router.post("/", async (req: Request, res: Response) => {
             latitude: req.body.latitude,
             longitude: req.body.longitude,
             number_channel: req.body.number_channel,
-            areaId: req.body.area_id
+            areaId: req.body.area_id,
+            rotate: req.body.rotate
         })
         return res.send(juntion)
     }
@@ -52,7 +53,8 @@ router.put("/:id", async (req: Request, res: Response) => {
             latitude: req.body.latitude,
             longitude: req.body.longitude,
             number_channel: req.body.number_channel,
-            areaId: req.body.area_id
+            areaId: req.body.area_id,
+            rotate: req.body.rotate
         })
         // let roleID = req.body.roleID
 
