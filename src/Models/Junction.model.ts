@@ -16,10 +16,10 @@ export class Junction {
     @Column({ length: 64 })
     name: string;
 
-    @Column({ type: "float", default: 0.00 })
+    @Column({ type: "float" })
     latitude: number;
 
-    @Column({ type: "float", default: 0.00 })
+    @Column({ type: "float" })
     longitude: number;
 
     @Column({ type: "int" })

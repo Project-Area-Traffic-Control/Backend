@@ -10,6 +10,7 @@ import FlashingRoute from './flashing.route';
 import FixtimeRoute from './fixtime.route';
 import PlanRoute from './plan.route';
 import PatternRoute from './pattern.route';
+import VehicleRoute from './vehicle.route';
 // import AuthRoute from './auth.route';
 // import RoleRoute from './role.route'
 // import LicenseRoute from './license.route'
@@ -36,6 +37,7 @@ router.use('/flash_mode', FlashingRoute);
 router.use('/fixtime_mode', FixtimeRoute);
 router.use('/plans', PlanRoute);
 router.use('/patterns', PatternRoute);
+router.use('/vehicle', VehicleRoute);
 // router.use('/auth', AuthRoute);
 // router.use('/role', RoleRoute);
 // router.use('/license', LicenseRoute);

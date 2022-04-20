@@ -22,10 +22,10 @@ export class Plan {
     @ManyToOne(() => Junction, junction => junction.plan)
     junction: Junction
 
-    @OneToOne(() => Fixtime, fixtime => fixtime.plan)
-    @JoinColumn({ name: "fixtime_id" })
-    fixtime_id: number;
+    @OneToMany(() => Fixtime, fixtime => fixtime.plan)
+    // @JoinColumn({ name: "fixtime_id" })
+    fixtime_id: Fixtime[];
 
-    @OneToMany(()=>Pattern,pattern=>pattern.plan)
+    @OneToMany(() => Pattern, pattern => pattern.plan)
     pattern: Pattern[]
 }

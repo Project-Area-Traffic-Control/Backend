@@ -1,13 +1,16 @@
+import { Console } from "console";
 import { createQueryBuilder, getConnection, getManager, Repository } from "typeorm";
 import { Area } from "../Models/Area.model";
 import { Junction } from "../Models/Junction.model";
 
 interface junctionInterface {
+    id: number
     name: string;
     latitude: number;
     longitude: number,
     number_channel: number,
-    areaId: number
+    areaId: number,
+    rotate: number
 }
 
 const createJunction = async ({
@@ -15,7 +18,8 @@ const createJunction = async ({
     latitude,
     longitude,
     number_channel,
-    areaId
+    areaId,
+    rotate
 }: junctionInterface) => {
 
     const junction = new Junction();
@@ -23,6 +27,7 @@ const createJunction = async ({
     junction.latitude = latitude
     junction.longitude = longitude
     junction.number_channel = number_channel
+    junction.rotate = rotate
     let area = await getConnection().getRepository(Area).findOne({ id: areaId })
     junction.area = area
     // console.log(admin.area)
@@ -34,7 +39,7 @@ const getAllJunction = async () => {
     try {
         const userRepository = await getConnection().getRepository(Junction);
         return await userRepository.find({
-            select: ["id", "name", "latitude", "longitude", "number_channel"],
+            select: ["id", "name", "latitude", "longitude", "number_channel", "rotate"],
             relations: ["area", "channel"]
         })
     } catch (e) {
@@ -48,6 +53,8 @@ const getJunctionById = async (uid: number) => {
         return await userRepository.createQueryBuilder("junction")
             .leftJoinAndSelect("junction.area", "area")
             .leftJoinAndSelect("junction.channel", "channel")
+            .leftJoinAndSelect("junction.plan", "plan")
+            .leftJoinAndSelect("junction.fixtime_plan", "fixtime_plan")
             .where("junction.id = :id", { id: uid })
             .getOne();
     } catch (e) {
@@ -61,20 +68,21 @@ const updateJunction = async ({
     latitude,
     longitude,
     number_channel,
-    areaId
-}) => {
-
-    const junctionRepository = await getConnection().getRepository(Junction);
-    let updateJunction = await junctionRepository.findOne({ id: id });
-    updateJunction.name = name
-    updateJunction.latitude = latitude
-    updateJunction.longitude = longitude
-    updateJunction.number_channel = number_channel
+    areaId,
+    rotate
+}: junctionInterface) => {
+    // console.log(latitude, " ", longitude)
     let area = await getConnection().getRepository(Area).findOne({ id: areaId })
-    updateJunction.area = area
     // console.log(admin.area)
     // user.area = areaId
-    return await getConnection().getRepository(Junction).save(updateJunction);
+    try {
+        return await getConnection()
+            .createQueryBuilder()
+            .update(Junction)
+            .set({ name: name, latitude: latitude, longitude: longitude, area: area, number_channel: number_channel, rotate: rotate })
+            .where("id = :id", { id: id })
+            .execute();
+    } catch (e) { throw e }
 }
 
 const deleteJunction = async (uid: number) => {
