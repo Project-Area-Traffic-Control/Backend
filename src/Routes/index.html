@@ -16,9 +16,8 @@
 
         .column {
             float: left;
-            width: 33.3%;
+            width: 720px;
             margin-bottom: 16px;
-            padding: 0 8px;
         }
 
         @media screen and (max-width: 650px) {
@@ -46,6 +45,13 @@
             display: table;
         }
 
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
         .title {
             color: grey;
         }
@@ -69,24 +75,69 @@
         .head {
             align-self: center;
         }
+        #img1{
+            width: 100%;
+            height: auto;
+            padding: 0 20px 20px 20px;
+        }
     </style>
 </head>
 
 <body>
     <br>
     <div class="row">
-        <div class="column">
+        <br />
+        <br />
+
+        <div>
+            <label>Choose a camera : </label>
+            <select id="camSelect"  onchange="onChange()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+        <br />
+        <br />
+
+        <div>
+            <div class="column">
+                <div class="card">
+                    <h1 class="head" id="headCam">Camera 1</h1>
+                    <img id="img1">
+                    <!-- <div class="container">
+                        <p id="camera1">Camera</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="column">
             <div class="card">
-                <h1 class="head">Junction 5</h1>
-                <img id="img1" style="width:100%">
+                <h1 class="head">Camera 2</h1>
+                <img id="img2" style="width:100%">
                 <div class="container">
-                    <p id="mode">Mode</p>
-                    <p id="phase">Phase</p>
+                    
+                    <p id="camera2">Camera</p>
                 </div>
             </div>
         </div>
 
         <div class="column">
+            <div class="card">
+                <h1 class="head">Camera 3</h1>
+                <img id="img3" style="width:100%">
+                <div class="container">
+                    <p id="camera3">Camera</p>
+                </div>
+            </div>
+        </div> -->
+
+
+
+        <!-- <div class="column">
             <div class="card">
                 <h1 class="head">Camara 2</h1>
                 <img id="img2" style="width:100%">
@@ -108,7 +159,7 @@
                     <p id="ip3">IP</p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -149,7 +200,46 @@
                 let phase = msg.phase;
                 $('#phase').text("Phase : " + phase);
             })
+            socket.on('camera1:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "1"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera1').text("fps : " + msg.fps);
+                }
+                // console.log(msg.capture)
+            })
+            socket.on('camera2:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "2"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera2').text("fps : " + msg.fps);
+                }
+                
+                // console.log(msg.capture)
+            })
+            socket.on('camera3:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "3"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera3').text("fps : " + msg.fps);
+                }
+               
+                // console.log(msg.capture)
+            })
+
         });
+    </script>
+    <script>
+        var socket = io();
+        function onChange() {
+            var value = document.getElementById("camSelect").value;
+            document.getElementById("headCam").innerText = "Camera " +  value;
+            console.log(value)
+            socket.emit("camera:select:web",value)
+        }
     </script>
 
 </body>

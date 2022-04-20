@@ -21,7 +21,7 @@ import PatternRoute from './pattern.route';
 // import AlertHistoryRoute from './alertHistory.route'
 
 
-router.get("/", (req: Request, res: Response) => {
+router.get("/Camera", (req: Request, res: Response) => {
     //res.send("App is Running")
     res.sendFile(__dirname + "/index.html");
 });
