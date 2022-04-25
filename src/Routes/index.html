@@ -16,9 +16,8 @@
 
         .column {
             float: left;
-            width: 33.3%;
+            width: 720px;
             margin-bottom: 16px;
-            padding: 0 8px;
         }
 
         @media screen and (max-width: 650px) {
@@ -46,6 +45,13 @@
             display: table;
         }
 
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
         .title {
             color: grey;
         }
@@ -69,25 +75,69 @@
         .head {
             align-self: center;
         }
+        #img1{
+            width: 100%;
+            height: auto;
+            padding: 0 20px 20px 20px;
+        }
     </style>
 </head>
 
 <body>
     <br>
     <div class="row">
-        <div class="column">
+        <br />
+        <br />
+
+        <div>
+            <label>Choose a camera : </label>
+            <select id="camSelect"  onchange="onChange()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+        <br />
+        <br />
+
+        <div>
+            <div class="column">
+                <div class="card">
+                    <h1 class="head" id="headCam">Camera 1</h1>
+                    <img id="img1">
+                    <!-- <div class="container">
+                        <p id="camera1">Camera</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="column">
             <div class="card">
-                <h1 class="head">Camara 1</h1>
-                <img id="img1" style="width:100%">
+                <h1 class="head">Camera 2</h1>
+                <img id="img2" style="width:100%">
                 <div class="container">
-                    <h2 id="license1">License</h2>
-                    <p id="province1">Province</p>
-                    <p id="ip1">IP</p>
+                    
+                    <p id="camera2">Camera</p>
                 </div>
             </div>
         </div>
 
         <div class="column">
+            <div class="card">
+                <h1 class="head">Camera 3</h1>
+                <img id="img3" style="width:100%">
+                <div class="container">
+                    <p id="camera3">Camera</p>
+                </div>
+            </div>
+        </div> -->
+
+
+
+        <!-- <div class="column">
             <div class="card">
                 <h1 class="head">Camara 2</h1>
                 <img id="img2" style="width:100%">
@@ -109,7 +159,7 @@
                     <p id="ip3">IP</p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -118,21 +168,21 @@
         $(function () {
             var socket = io();
             socket.on('Device11', function (msg) {
-                console.log("data : ",msg)
+                console.log("data : ", msg)
                 document.getElementById('img1').src = 'data:image/png;base64,' + msg.IMAGE;
                 $('#license1').text(msg.LICENSEPLATE);
                 $('#province1').text(msg.PROVINCE);
                 $('#ip1').text(msg.IP);
             });
             socket.on('Device13', function (msg) {
-                console.log("data : ",msg)
+                console.log("data : ", msg)
                 document.getElementById('img2').src = 'data:image/png;base64,' + msg.IMAGE;
                 $('#license2').text(msg.LICENSEPLATE);
                 $('#province2').text(msg.PROVINCE);
                 $('#ip2').text(msg.IP);
             });
             socket.on('Device15', function (msg) {
-                console.log("data : ",msg)
+                console.log("data : ", msg)
                 document.getElementById('img3').src = 'data:image/png;base64,' + msg.IMAGE;
                 $('#license3').text(msg.LICENSEPLATE);
                 $('#province3').text(msg.PROVINCE);
@@ -142,7 +192,54 @@
                 let type = msg.isBlacklist ? 'blacklist' : 'whitelist';
                 alert(msg.license + ' : ' + type)
             })
+            socket.on('setMode5', (msg) => {
+                let mode = msg.mode == 0 ? 'Fix time mode' : msg.mode == 1 ? "Manual mode" : "else mode";
+                $('#mode').text("Mode : " + mode);
+            })
+            socket.on('setPhase5', (msg) => {
+                let phase = msg.phase;
+                $('#phase').text("Phase : " + phase);
+            })
+            socket.on('camera1:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "1"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera1').text("fps : " + msg.fps);
+                }
+                // console.log(msg.capture)
+            })
+            socket.on('camera2:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "2"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera2').text("fps : " + msg.fps);
+                }
+                
+                // console.log(msg.capture)
+            })
+            socket.on('camera3:send', (msg) => {
+                let camera = msg;
+                let value = document.getElementById("camSelect").value;
+                if(value == "3"){
+                    document.getElementById('img1').src = 'data:image/png;base64,' + msg.capture;
+                    $('#camera3').text("fps : " + msg.fps);
+                }
+               
+                // console.log(msg.capture)
+            })
+
         });
+    </script>
+    <script>
+        var socket = io();
+        function onChange() {
+            var value = document.getElementById("camSelect").value;
+            document.getElementById("headCam").innerText = "Camera " +  value;
+            console.log(value)
+            socket.emit("camera:select:web",value)
+        }
     </script>
 
 </body>
