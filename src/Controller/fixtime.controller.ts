@@ -95,6 +95,7 @@ const getFixtimeByJunctionID = async (id: number) => {
         return await fixtimeRepository.createQueryBuilder("fixtime")
         .leftJoinAndSelect("fixtime.plan", "plan")
         .where("fixtime.junctionID = :id", { id: id })
+        .orderBy('fixtime.start', 'ASC')
         .getMany();
     } catch (e) {
         throw e;
