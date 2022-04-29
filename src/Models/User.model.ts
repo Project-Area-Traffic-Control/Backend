@@ -1,6 +1,7 @@
 import { profile } from "console";
 import { Entity, OneToMany, Column, OneToOne, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Area } from "./Area.model";
+import { Permission } from "./Permisssion.model";
 import { Profile } from "./Profile.model";
 
 @Entity()
@@ -22,7 +23,10 @@ export class User {
     profile: Profile;
 
     @ManyToOne(() => Area, area => area.user)
-    area: Area
+    area: Area;
+
+    @OneToMany(() => Permission, permission => permission.user)
+    permissions: Permission[];
 
 
 }

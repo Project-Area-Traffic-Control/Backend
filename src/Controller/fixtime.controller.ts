@@ -35,6 +35,9 @@ const updateFixtime = async ({
     planID
 }) => {
 
+    // const endDate = new Date(end)
+    console.log("start : ", start, " end : ", end)
+    // console.log("end : ", endDate.getHours())
     const fixtimeRepository = await getConnection().getRepository(Fixtime);
     let updateFixtime = await fixtimeRepository.findOne({ id: id })
     updateFixtime.start = start
