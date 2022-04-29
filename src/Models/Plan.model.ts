@@ -10,7 +10,7 @@ export class Plan {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 100, unique: true })
+    @Column({ length: 100 })
     name: string;
 
     @Column({ type: 'int' })

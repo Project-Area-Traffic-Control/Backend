@@ -9,8 +9,8 @@ export class Vehicle {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
-    create_time: string;
+    @Column()
+    create_time: Date;
 
     @ManyToOne(() => Junction, junction => junction.vehicle)
     junction: Junction
