@@ -92,13 +92,10 @@ const getFixtimeById = async (uid: number) => {
 const getFixtimeByJunctionID = async (id: number) => {
     try {
         const fixtimeRepository = await getConnection().getRepository(Fixtime);
-        return await fixtimeRepository.find({
-            relations: ["plan"],
-            // order: { DATETIME: 'DESC' },
-            where: {
-                junctionID: id,
-            }
-        })
+        return await fixtimeRepository.createQueryBuilder("fixtime")
+        .leftJoinAndSelect("fixtime.plan", "plan")
+        .where("fixtime.junctionID = :id", { id: id })
+        .getMany();
     } catch (e) {
         throw e;
     }
