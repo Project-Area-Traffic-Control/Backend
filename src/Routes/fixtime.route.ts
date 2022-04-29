@@ -66,4 +66,14 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 });
 
+router.get("/byJunctionID/:id", async (req: Request, res: Response) => {
+    try {
+        let id = Number(req.params.id);
+        let fixtime = await fixtimeController.getFixtimeByJunctionID(id);
+        return res.send(fixtime);
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+});
+
 export default router;

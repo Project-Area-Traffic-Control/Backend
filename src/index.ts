@@ -27,8 +27,10 @@ const app: Application = express()
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:3001'],
-        methods: ["GET", "SET"]
+        // origin: ['http://localhost:3001'],
+        // methods: ["GET", "SET"],
+        credentials: true,
+        origin: true,
     }
 });
 
@@ -69,13 +71,19 @@ io.on("connection",onConnection);
 junctionControlController.setSocket(io);
 cameraController.setSocket(io);
 
-app.use(cors(
-    {
-        origin: ['http://localhost:3001'],
-        credentials: true,
-        exposedHeaders: ["set-cookie"]
-    }
-));
+// app.use(cors(
+//     {
+//         origin: ['http://localhost:3001'],
+//         credentials: true,
+//         exposedHeaders: ["set-cookie"]
+//     }
+// ));
+
+const corsConfig = {
+    credentials: true,
+    origin: true,
+};
+app.use(cors(corsConfig))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))

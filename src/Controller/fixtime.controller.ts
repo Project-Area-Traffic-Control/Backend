@@ -89,11 +89,26 @@ const getFixtimeById = async (uid: number) => {
         throw e;
     }
 }
+const getFixtimeByJunctionID = async (id: number) => {
+    try {
+        const fixtimeRepository = await getConnection().getRepository(Fixtime);
+        return await fixtimeRepository.find({
+            relations: ["plan"],
+            // order: { DATETIME: 'DESC' },
+            where: {
+                junctionID: id,
+            }
+        })
+    } catch (e) {
+        throw e;
+    }
+}
 
 export default {
     createFixtime,
     getAllFixtime,
     getFixtimeById,
     updateFixtime,
-    deleteFixtime
+    deleteFixtime,
+    getFixtimeByJunctionID
 }
