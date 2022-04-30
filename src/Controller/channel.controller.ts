@@ -103,10 +103,24 @@ const getChannelById = async (uid: number) => {
     }
 }
 
+const getChannelByJunctionID = async (id: number) => {
+    try {
+        const fixtimeRepository = await getConnection().getRepository(Channel);
+        return await fixtimeRepository.createQueryBuilder("channel")
+        .leftJoinAndSelect("channel.phase", "phase")
+        .where("channel.junctionID = :id", { id: id })
+        .getMany();
+
+    } catch (e) {
+        throw e;
+    }
+}
+
 export default {
     createChannel,
     getAllChannel,
     getChannelById,
     updateChannel,
-    deleteChannel
+    deleteChannel,
+    getChannelByJunctionID
 }
