@@ -66,5 +66,14 @@ router.delete('/:id', async (req: Request, res: Response) => {
     }
 });
 
+router.get("/getByJunctionID/:id", async (req: Request, res: Response) => {
+    try {
+        let id = Number(req.params.id);
+        let channel = await channelController.getChannelByJunctionID(id);
+        return res.send(channel);
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+});
 
 export default router;
