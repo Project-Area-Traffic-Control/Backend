@@ -31,7 +31,7 @@ export class Permission {
     delete: boolean;
 
     @Column({ default: false })
-    export: boolean;
+    control: boolean;
 
     @ManyToOne(() => User, user => user.permissions)
     // @JoinColumn({name: "uid"})

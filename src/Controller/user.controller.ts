@@ -1,12 +1,15 @@
-import { User } from "../Models/User.model";
+import { RoleName, User } from "../Models/User.model";
 import { Profile } from "../Models/Profile.model";
 import { createQueryBuilder, getConnection, getManager, Repository, SelectQueryBuilder } from "typeorm";
 import { Area } from "../Models/Area.model";
 import { add } from "lodash";
+import { Permission } from "../Models/Permisssion.model";
 export interface userInterface {
     username: string;
     password: string;
     areaId: number;
+    permissionList: Permission[]
+    role: RoleName
 }
 
 export interface userProfileInterface {
@@ -22,14 +25,31 @@ export interface userProfileInterface {
 const createUser = async ({
     username,
     password,
-    areaId
+    areaId,
+    permissionList,
+    role
 }: userInterface) => {
 
     const user = new User();
     user.username = username
     user.password = password
+    user.role = role
+    var permissions = permissionList
+    // for (let index = 0; index < permissionList.length; index++) {
+    //     var permiss = new Permission()
+    //     permiss.name = permissionList[index].name;
+    //     permiss.view = permissionList[index].view ? permissionList[index].view : false;
+    //     permiss.edit = permissionList[index].edit ? permissionList[index].edit : false;
+    //     permiss.delete = permissionList[index].delete ? permissionList[index].delete : false;
+    //     permiss.control = permissionList[index].control ? permissionList[index].control : false;
+    //     permissions.push(permiss)
+    // }
+    // console.log(permissions)
+    // user.permissions = permissions
+    let permiss = await getConnection().getRepository(Permission).save(permissions);
     let area = await getConnection().getRepository(Area).findOne({ id: areaId })
     user.area = area
+    user.permissions = permiss
     console.log(user.area)
     // user.area = areaId
     return await getConnection().getRepository(User).save(user);
@@ -124,6 +144,30 @@ const updateArea = async (
     }
 }
 
+const updateRole = async (
+    uid: number,
+    role: RoleName,
+) => {
+    try {
+        // console.log("update area");
+        const userRepository = await getConnection().getRepository(User);
+        let updateRole = await userRepository.findOne({ id: uid });
+        if (role == null) {
+            updateRole.role = null
+        }
+        else {
+            updateRole.role = role
+        }
+
+        let newRole = await userRepository.save(updateRole);
+        return newRole;
+
+    }
+    catch (e) {
+        throw e;
+    }
+}
+
 const deleteUser = async (uid: number) => {
     try {
         const profileRepository = await getConnection().getRepository(Profile);
@@ -143,6 +187,7 @@ const getUserById = async (uid: number) => {
     try {
         const userRepository = await getConnection().getRepository(User);
         return await userRepository.createQueryBuilder("user")
+            .leftJoinAndSelect("user.permissions", "permissions")
             .leftJoinAndSelect("user.profile", "profile")
             .leftJoinAndSelect("user.area", "area")
             .where("user.id = :id", { id: uid })
@@ -156,8 +201,8 @@ const getAllUser = async () => {
     try {
         const userRepository = await getConnection().getRepository(User);
         return await userRepository.find({
-            select: ["id", "username", "create_time"],
-            relations: ["profile", "area"]
+            select: ["id", "username", "create_time", "role"],
+            relations: ["profile", "area", "permissions"]
         })
     } catch (e) {
         throw e;
@@ -171,5 +216,6 @@ export default {
     deleteUser,
     getUserById,
     getAllUser,
-    updateArea
+    updateArea,
+    updateRole
 };

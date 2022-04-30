@@ -4,6 +4,7 @@ import { Junction } from "../Models/Junction.model";
 import { Phase } from "../Models/Phase.model";
 import { Vehicle } from "../Models/Vehicle.model";
 
+
 interface vehicleInterface {
     create_time: Date
     junctionID: number
