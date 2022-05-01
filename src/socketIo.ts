@@ -10,16 +10,13 @@ const setSocket = (socket: Server) => {
 
 }
 
-const main = () => {
-    socketIO.on("connect",(client) => {
-        console.log("client connect : ",client.id)
+const socket = (socket) => {
+
+    socket.on(`update:setting`,(data)=> {
+        console.log('update setting ',data)
+        socket.emit(`update:setting`,data)
     })
 
-    socketIO.on(`update:setting`,(data)=> {
-        console.log('update setting ',data)
-        socketIO.emit(`update:setting`,data)
-    })
-    
 }
 
 
@@ -55,5 +52,6 @@ const main = () => {
 
 
 export default {
-    setSocket
+    setSocket,
+    socket
 }

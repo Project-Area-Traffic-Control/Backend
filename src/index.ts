@@ -34,9 +34,14 @@ const io = new Server(httpServer, {
     }
 });
 
+io.on("connect",(Socket) => {
+    socketIo.socket(Socket)
+})
+
 junctionControlController.setSocket(io);
 cameraController.setSocket(io);
-socketIo.setSocket(io)
+
+
 
 // app.use(cors(
 //     {
