@@ -14,7 +14,7 @@ const socket = (socket) => {
 
     socket.on(`update:setting`,(data)=> {
         console.log('update setting ',data)
-        socket.emit(`update:setting:${data}`,data)
+        socket.emit(`update:setting`,data)
     })
 
 }
