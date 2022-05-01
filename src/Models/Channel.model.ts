@@ -13,8 +13,8 @@ export class Channel {
     @Column({ length: 100 })
     name: string;
 
-    @Column({ type: 'int' })
-    nunmber_lane: number;
+    @Column({ type: 'int', default: 0 })
+    number_lane: number;
 
     @Column({ type: 'int' })
     order: number

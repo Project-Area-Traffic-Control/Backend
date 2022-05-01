@@ -29,6 +29,7 @@ const updatePhase = async ({
     channelID
 }) => {
 
+    console.log(port_number)
     const ChannelRepository = await getConnection().getRepository(Phase);
     let updatePhase = await ChannelRepository.findOne({ id: id })
     updatePhase.type = type

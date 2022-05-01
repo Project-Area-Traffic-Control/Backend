@@ -44,7 +44,7 @@ router.put("/:id", async (req: Request, res: Response) => {
         let newPhase = await phaseController.updatePhase({
             id: id,
             type: req.body.type,
-            port_number: req.body.number_lane,
+            port_number: req.body.port_number,
             channelID: req.body.channel_id
         })
         return res.send(newPhase);

@@ -18,7 +18,7 @@ const createChannel = async ({
 
     const channel = new Channel();
     channel.name = name
-    channel.nunmber_lane = number_lane
+    channel.number_lane = '' ? 1 : number_lane
     channel.order = order
     let junction = await getConnection().getRepository(Junction)
         .createQueryBuilder("junction")
@@ -55,7 +55,7 @@ const updateChannel = async ({
     const ChannelRepository = await getConnection().getRepository(Channel);
     let updateChannel = await ChannelRepository.findOne({ id: id })
     updateChannel.name = name
-    updateChannel.nunmber_lane = number_lane
+    updateChannel.number_lane = number_lane
     updateChannel.order = order
     let junction = await getConnection().getRepository(Junction).findOne({ id: junctionID })
     updateChannel.junction = junction
@@ -83,7 +83,7 @@ const getAllChannel = async () => {
     try {
         const userRepository = await getConnection().getRepository(Channel);
         return await userRepository.find({
-            select: ["id", "name", "nunmber_lane", "order"],
+            select: ["id", "name", "number_lane", "order"],
             relations: ["junction", "phase"]
         })
     } catch (e) {
@@ -107,9 +107,9 @@ const getChannelByJunctionID = async (id: number) => {
     try {
         const fixtimeRepository = await getConnection().getRepository(Channel);
         return await fixtimeRepository.createQueryBuilder("channel")
-        .leftJoinAndSelect("channel.phase", "phase")
-        .where("channel.junctionID = :id", { id: id })
-        .getMany();
+            .leftJoinAndSelect("channel.phase", "phase")
+            .where("channel.junctionID = :id", { id: id })
+            .getMany();
 
     } catch (e) {
         throw e;
