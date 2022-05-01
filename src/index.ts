@@ -17,6 +17,7 @@ import Routes from './Routes/index.route'
 import junctionControlController from './Controller/junction.control.controller';
 import cameraController from './Controller/camera.controller';
 import { print } from 'util';
+import socketIo from './socketIo';
 
 
 createConnection().then(async () => {
@@ -34,42 +35,10 @@ const io = new Server(httpServer, {
     }
 });
 
-const onConnection = (socket) => {
-    console.log("socketIO connected")
-    socket.on("camera1:recive", data => {
-        // socket.emit("camera:send",data);
-        cameraController.sendCamera(1,data)
-        //console.log("camera recive : ",data);
-    });
-    socket.on("camera2:recive", data => {
-        // socket.emit("camera:send",data);
-        cameraController.sendCamera(2,data)
-        //console.log("camera recive : ",data);
-    });
-    socket.on("camera3:recive", data => {
-        // socket.emit("camera:send",data);
-        cameraController.sendCamera(3,data)
-        //console.log("camera recive : ",data);
-    });
-    socket.on("camera:select:web",data => {
-        console.log("select : ",data)
-        cameraController.emitSelect(data)
-    })
-  }
-
-io.on("connect",(client) => {
-    console.log("client connect : ",client.id)
-    // io.on("setMode5", data => {
-    //     console.log("camera");
-    // });
-})
-io.on("connection",onConnection);
-
-
-
 
 junctionControlController.setSocket(io);
 cameraController.setSocket(io);
+socketIo.setSocket(io)
 
 // app.use(cors(
 //     {
