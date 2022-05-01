@@ -16,7 +16,6 @@ import cookieParser from "cookie-parser";
 import Routes from './Routes/index.route'
 import junctionControlController from './Controller/junction.control.controller';
 import cameraController from './Controller/camera.controller';
-import { print } from 'util';
 import socketIo from './socketIo';
 
 
@@ -34,7 +33,6 @@ const io = new Server(httpServer, {
         origin: true,
     }
 });
-
 
 junctionControlController.setSocket(io);
 cameraController.setSocket(io);

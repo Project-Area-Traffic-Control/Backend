@@ -1,22 +1,27 @@
-import { type } from "os";
 import { Server } from "socket.io";
 
 var socketIO: Server;
+var set = false
 
 const setSocket = (socket: Server) => {
     socketIO = socket;
-    console.log("Set socketIO in camera control");
+    set = true
+    console.log("Set socketIO in Socket control");
+
 }
 
-socketIO.on("connect",(client) => {
-    console.log("client connect : ",client.id)
-})
+const main = () => {
+    socketIO.on("connect",(client) => {
+        console.log("client connect : ",client.id)
+    })
 
+    socketIO.on(`update:setting`,(data)=> {
+        console.log('update setting ',data)
+        socketIO.emit(`update:setting`,data)
+    })
+    
+}
 
-socketIO.on(`update:setting`,(data)=> {
-    console.log('update setting ',data)
-    socketIO.emit(`update:setting`,data)
-})
 
 
 
