@@ -34,7 +34,7 @@ const createAdmin = async ({
     admin.image = image
     let area = await getConnection().getRepository(Area).findOne({ id: areaId })
     admin.area = area
-    console.log(admin.area)
+  
     // user.area = areaId
     return await getConnection().getRepository(Admin).save(admin);
 }
