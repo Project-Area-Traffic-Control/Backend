@@ -16,6 +16,7 @@ const emitSelect = (data) => {
 }
 
 
+
 export default {
     setSocket,
     sendCamera,

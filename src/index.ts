@@ -25,21 +25,36 @@ createConnection().then(async () => {
 
 const app: Application = express()
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
+const io1 = require('socket.io')(httpServer, {
+    path: '/socket',
     cors: {
         // origin: ['http://localhost:3001'],
         // methods: ["GET", "SET"],
         credentials: true,
         origin: true,
     }
+  });
+const io2 = require('socket.io')(httpServer, {
+    cors: {
+        credentials: true,
+        origin: true,
+    }
 });
+// const io = new Server(httpServer, {
+//     cors: {
+//         // origin: ['http://localhost:3001'],
+//         // methods: ["GET", "SET"],
+//         credentials: true,
+//         origin: true,
+//     }
+// });
 
-io.on("connect",(Socket) => {
-    socketIo.socket(Socket)
-})
 
-junctionControlController.setSocket(io);
-cameraController.setSocket(io);
+
+
+socketIo.setSocket(io1,io2)
+junctionControlController.setSocket(io2);
+// cameraController.setSocket(io1);
 
 
 

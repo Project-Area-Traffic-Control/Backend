@@ -18,42 +18,36 @@ const createVehicle = async ({
     channelID,
     phaseID
 }: vehicleInterface) => {
-    const vehicle = new Vehicle();
+    var vehicle = new Vehicle();
 
     // vehicle.create_time = create_time
-    let junction = await getConnection().getRepository(Junction).findOne({ id: junctionID })
-    let channel = await getConnection().getRepository(Channel).findOne({ id: channelID })
-    let phase = await getConnection().getRepository(Phase).findOne({ id: phaseID })
-    vehicle.create_time = create_time
+    var time = new Date(create_time)
+    var junction = await getConnection().getRepository(Junction).findOne({ id: junctionID })
+    var channel = await getConnection().getRepository(Channel).findOne({ id: channelID })
+    var phase = await getConnection().getRepository(Phase).findOne({ id: phaseID })
+
+    vehicle.create_time = time
     vehicle.channel = channel
     vehicle.phase = phase
     vehicle.junction = junction
-    return await getConnection().getRepository(Vehicle).save(vehicle);
+
+    let res = await getConnection().getRepository(Vehicle).save(vehicle);
+    // console.log(res)
+    return res
 }
 
 const getAllVehicleByJunctionId = async (id: number) => {
     try {
         // await deleteNull()
-        const vehicleRepository = await getConnection().getRepository(Vehicle);
-        var res = []
-        var list = []
-        await vehicleRepository.find({
+        const vehicleRepository = await getConnection().getRepository(Vehicle)
+        return await vehicleRepository.find({
             select: ["id", "create_time"],
-            relations: ["junction", "channel", "phase"]
-        }).then((data) => {
-            list = data
-        })
-        for (let index = 0; index < list.length; index++) {
-            if (id == list[index].junction.id) {
-                res.push(list[index])
+            relations: ["junction", "channel", "phase"],
+            where: {
+                junction: id
             }
-        }
-        return await res
-        // return await userRepository.createQueryBuilder("vehicle")
-        //     .leftJoinAndSelect("vehicle.profile", "profile")
-        //     .leftJoinAndSelect("vehicle.area", "area")
-        //     .where("vehicle.id = :id", { id: id })
-        //     .getOne();
+            
+        })
     } catch (e) {
         throw e;
     }
@@ -110,27 +104,13 @@ const getAllVehicleByChannelId = async (id: number) => {
     try {
         // await deleteNull()
         const vehicleRepository = await getConnection().getRepository(Vehicle);
-        var res = []
-        var list = []
-        await vehicleRepository.find({
+        return await vehicleRepository.find({
             select: ["id", "create_time"],
-            relations: ["junction", "channel", "phase"]
-        }).then((data) => {
-            list = data
-        })
-        for (let index = 0; index < list.length; index++) {
-            if (list[index].create_time !== null) {
-                if (id == list[index].channel.id) {
-                    res.push(list[index])
-                }
+            relations: ["junction", "channel", "phase"],
+            where: {
+                channel: id
             }
-        }
-        return await res
-        // return await userRepository.createQueryBuilder("vehicle")
-        //     .leftJoinAndSelect("vehicle.profile", "profile")
-        //     .leftJoinAndSelect("vehicle.area", "area")
-        //     .where("vehicle.id = :id", { id: id })
-        //     .getOne();
+        })
     } catch (e) {
         throw e;
     }
