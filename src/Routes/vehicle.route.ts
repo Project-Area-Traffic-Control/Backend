@@ -6,8 +6,11 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
     try {
+
+        console.log(req.body.channel_id)
         const vehicle = await vehicleController.createVehicle({
             // patternName: req.body.pattern,
+            
             create_time: req.body.create_time,
             junctionID: req.body.junction_id,
             channelID: req.body.channel_id,

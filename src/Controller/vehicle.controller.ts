@@ -20,6 +20,7 @@ const createVehicle = async ({
 }: vehicleInterface) => {
     const vehicle = new Vehicle();
 
+    console.log(create_time)
     // vehicle.create_time = create_time
     let junction = await getConnection().getRepository(Junction).findOne({ id: junctionID })
     let channel = await getConnection().getRepository(Channel).findOne({ id: channelID })

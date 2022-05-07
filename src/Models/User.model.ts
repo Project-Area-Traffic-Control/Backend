@@ -25,7 +25,7 @@ export class User {
     @Column({ length: 16, unique: true })
     username: string;
 
-    @Column({ length: 64, select: false })
+    @Column({ length: 64, select: true })
     password: string;
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })

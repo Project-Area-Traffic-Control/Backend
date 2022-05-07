@@ -1,7 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Request, RequestHandler, Response } from "express";
 import userController from "../Controller/user.controller";
 import crypto from 'crypto';
 import { Permission } from "../Models/Permisssion.model";
+import passport from "passport";
+import authController from "../Controller/auth.controller";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -48,7 +50,7 @@ router.post("/", async (req: Request, res: Response) => {
             password: password,
             areaId: req.body.area_id,
             permissionList: permissions,
-            role: req.body.role 
+            role: req.body.role
         })
         delete user["password"];
 
@@ -138,6 +140,48 @@ router.delete('/:id', async (req: Request, res: Response) => {
         return res.send(deleteuser);
     } catch (e) {
         return res.status(400).send(e);
+    }
+})
+
+const jwtAuth: RequestHandler = passport.authenticate("jwt", {
+    session: false
+});
+
+router.get("/", (req: Request, res: Response) => {
+    res.send("Auth Route")
+});
+
+router.post('/login', async (req: Request, res: Response) => {
+    console.log(req.body.password)
+    try {
+        const password = await crypto.createHash('md5').update(req.body.password).digest("hex");
+
+        const user = await authController.signIn({
+            username: req.body.username,
+            password: password
+        })
+
+        if (user.access_token) {
+            console.log("pass")
+            return res.status(200).cookie("access_token", user).send({ user })
+        }
+        else {
+            console.log("error")
+            return res.status(400).send(JSON.stringify(user.massage))
+        }
+    }
+    catch (e) {
+
+        return res.status(401).send(e);
+    }
+})
+
+router.get('/verify', jwtAuth, async (req, res) => {
+    try {
+        return res.send({ massage: "token is verify success" })
+    }
+    catch (e) {
+        return res.send(e);
     }
 })
 
