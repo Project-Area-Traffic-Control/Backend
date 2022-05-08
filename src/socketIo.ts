@@ -41,12 +41,16 @@ const setSocket = (socket1:Server ,socket2:Server ) => {
     socket2.on("connect",(Socket) => {
         
         Socket.on('update:phase',(data)=>{
-        console.log('update phase ',data)
-        socket1.emit(`update:phase:${data.junction_id}`,data.phase)
+            // console.log('update phase ',data)
+            socket1.emit(`update:phase:${data.junction_id}`,data.phase)
+
+            socket2.emit(`set:phase:sim`,data)
         })
         Socket.on('update:mode',(data)=>{
             // console.log('update mode ',data)
             socket1.emit(`update:mode:${data.junction_id}`,data.mode)
+
+            socket2.emit(`set:mode:sim`,data)
         })
         Socket.on('update:timer',(data)=>{
             // console.log('update timer ',data)
